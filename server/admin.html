@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Admin</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+	<script>
+		$(window).ready(function(){
+			$('.nav.nav-pills > li').on('click', function(){
+				$('.nav.nav-pills > li').removeClass('active');
+				$(this).addClass('active');
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="app"></div>
+	<script src="http://localhost:8080/admin.bundle.js"></script>
+</body>
+</html>
