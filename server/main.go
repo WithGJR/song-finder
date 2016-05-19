@@ -23,10 +23,19 @@ func main() {
 	e.Static("/static", "./static")
 
 	e.GET("/songs", func(c echo.Context) error {
-		songs := make([]struct {
-			Name string
-		}, 0)
+		var songs []models.Song
+		models.GetAllSong(&songs)
 		return c.JSON(http.StatusOK, songs)
+	})
+
+	e.POST("/songs", func(c echo.Context) error{
+		song := new(models.Song)
+		if err := c.Bind(song); err != nil {
+			return nil
+		}
+		song.Create()
+		return c.JSON(http.StatusOK, *song)
+
 	})
 
 	e.POST("/admin/login", func(c echo.Context) error {
