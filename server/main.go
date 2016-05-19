@@ -1,14 +1,21 @@
 package main
 
 import (
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"net/http"
 	"song-finder/server/models"
-	"time"
 )
 
 func main() {
+	db, err := gorm.Open("mysql", "username:password@/dbname?charset=utf8&parseTime=True&loc=Local")
+	if err != nil {
+		panic("failed to connect database")
+	}
+	db.AutoMigrate(&models.Album{}, &models.Singer{}, &models.Song{})
+
 	e := echo.New()
 
 	e.File("/admin/login", "./login.html")
@@ -16,7 +23,6 @@ func main() {
 	e.Static("/static", "./static")
 
 	e.GET("/songs", func(c echo.Context) error {
-		time.Sleep(2000 * time.Millisecond)
 		songs := make([]struct {
 			Name string
 		}, 0)
