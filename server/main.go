@@ -6,11 +6,12 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"net/http"
+	"song-finder/server/constants"
 	"song-finder/server/models"
 )
 
 func main() {
-	db, err := gorm.Open("mysql", "username:password@/dbname?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", constants.DBUsername+":"+constants.DBPassword+"@/"+constants.DBName+"?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -28,7 +29,7 @@ func main() {
 		return c.JSON(http.StatusOK, songs)
 	})
 
-	e.POST("/songs", func(c echo.Context) error{
+	e.POST("/songs", func(c echo.Context) error {
 		song := new(models.Song)
 		if err := c.Bind(song); err != nil {
 			return nil
