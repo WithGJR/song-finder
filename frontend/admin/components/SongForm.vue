@@ -4,8 +4,23 @@
     <form v-on:submit.prevent="submit">
       <div class="form-group">
         <label for="name" class="col-sm-2 control-label">曲名</label>
-        <input type="input" class="form-control" id="name" placeholder="曲名" v-model="song.name">
+        <input type="input" class="form-control" id="name" placeholder="曲名" v-model="song.Name">
       </div>  
+
+      <div class="form-group">
+        <label for="lyricist" class="col-sm-2 control-label">作詞人</label>
+        <input type="input" class="form-control" id="lyricist" placeholder="作詞人" v-model="song.Lyricist">
+      </div>  
+
+      <div class="form-group">
+        <label for="composer" class="col-sm-2 control-label">作曲人</label>
+        <input type="input" class="form-control" id="composer" placeholder="作曲人" v-model="song.Composer">
+      </div> 
+
+      <div class="form-group">
+        <label for="length" class="col-sm-2 control-label">歌曲長度</label>
+        <input type="input" class="form-control" id="length" placeholder="歌曲長度" v-model="song.Length">
+      </div> 
 
       <input type="submit" class="btn btn-default" value="{{btnText}}" />
     </form>
@@ -14,7 +29,7 @@
 
 <script>
 import { getSongs } from '../vuex/getters.js';
-import { addNewSong, editSong } from '../vuex/actions.js';
+import { addNewSong, updateSong } from '../vuex/actions.js';
 
 module.exports = {
   vuex: {
@@ -23,12 +38,12 @@ module.exports = {
     },
     actions: {
       addNewSong,
-      editSong
+      updateSong
     }
   },
   data(){
     return {
-      song: {name: ''}
+      song: {Name: '', Lyricist: '', Composer: ''}
     };
   },
   computed: {
@@ -45,19 +60,23 @@ module.exports = {
       return parseInt(this.$route.params.id);
     },
     currentSong(){
-      return this.songs[this.currentId];
+      for (var i = 0; i < this.songs.length; i++) {
+        if (this.songs[i].ID === this.currentId) {
+          return this.songs[i];
+        }
+      }
     }
   },
   methods: {
     isValid(){
-      return this.song.name !== ''; 
+      return this.song.Name !== ''; 
     },
     submit(){
       if(!this.isValid()){
         return;
       }
       if (this.formType === 'edit') {
-        this.editSong(this.currentId, this.song);
+        this.updateSong(this.currentId, this.song);
       }else{
         this.addNewSong(this.song);
         this.song = {name: ''};

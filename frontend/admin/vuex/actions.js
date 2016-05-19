@@ -14,9 +14,10 @@ module.exports = {
       dispatch(types.ADD_NEW_SONG, data); 
     });
   },
-  editSong({dispatch}, id, newSong){
-    //TODO: Add api
-    dispatch(types.EDIT_SONG, id, newSong);
+  updateSong({dispatch}, id, song){
+    api.updateSong(id, song, updatedSong => {
+      dispatch(types.UPDATE_SONG_SUCESS, updatedSong.ID, updatedSong);  
+    });
   },
   deleteSong({dispatch}, id){
     api.deleteSong(id, data => {

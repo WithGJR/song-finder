@@ -27,12 +27,29 @@ module.exports = {
     }); 
   },
 
-  deleteSong(index, successCallback){  
-    fetch('http://localhost:7777/songs/'+index, {
+  updateSong(id, song, successCallback){
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+
+    fetch('http://localhost:7777/songs/'+id, {
+      method: 'put',
+      headers: headers,
+      body: JSON.stringify(song)     
+    }).then(data => {
+      data.json().then(updateSong => {
+        successCallback(updateSong); 
+      });
+    }).catch(error => {
+    }); 
+  },
+
+  deleteSong(id, successCallback){  
+    fetch('http://localhost:7777/songs/'+id, {
       method: 'delete'
     }).then(data => {
-      data.json().then(json => {
-        successCallback(json); 
+      data.json().then(id => {
+        successCallback(id); 
       });
     }).catch(error => {
     }); 

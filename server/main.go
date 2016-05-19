@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"song-finder/server/constants"
 	"song-finder/server/models"
+	"strconv"
 )
 
 func main() {
@@ -25,18 +26,42 @@ func main() {
 
 	e.GET("/songs", func(c echo.Context) error {
 		var songs []models.Song
-		models.GetAllSong(&songs)
+		models.FindSongs(&songs)
 		return c.JSON(http.StatusOK, songs)
 	})
 
 	e.POST("/songs", func(c echo.Context) error {
 		song := new(models.Song)
 		if err := c.Bind(song); err != nil {
-			return nil
+			return err
 		}
 		song.Create()
-		return c.JSON(http.StatusOK, *song)
+		return c.JSON(http.StatusOK, song)
+	})
 
+	e.PUT("/songs/:id", func(c echo.Context) error {
+		song := new(models.Song)
+		if err := c.Bind(song); err != nil {
+			return err
+		}
+
+		song.Update()
+		return c.JSON(http.StatusOK, song)
+	})
+
+	e.DELETE("/songs/:id", func(c echo.Context) error {
+		var id uint64
+		var err error
+		if id, err = strconv.ParseUint(c.Param("id"), 10, 64); err != nil {
+			return err
+		}
+
+		song := new(models.Song)
+		song.ID = uint(id)
+		if err = song.Delete(); err != nil {
+			return err
+		}
+		return c.JSON(http.StatusOK, song.ID)
 	})
 
 	e.POST("/admin/login", func(c echo.Context) error {

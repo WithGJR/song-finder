@@ -1,11 +1,7 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type Album struct {
-	gorm.Model
+	Model
 	Name          string
 	Company       string
 	PublishedDate string

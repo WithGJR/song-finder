@@ -8,14 +8,14 @@
     </div>
     
     <ul class="list-group">
-        <li v-for="(index, song) in songs" class="list-group-item">
-            <h2>{{song.name}}</h2>
+        <li v-for="song in songs" class="list-group-item">
+            <h2>{{song.Name}}</h2>
             <hr>
             <div>
-                <a v-link="{path: '/songs/' + index + '/edit'}" class="btn btn-default">
+                <a v-link="{path: '/songs/' + song.ID + '/edit'}" class="btn btn-default">
                     <span class="glyphicon glyphicon-pencil"></span> 編輯
                 </a>
-                <a v-on:click="remove(index)" class="btn btn-danger">
+                <a v-on:click="remove(song.ID)" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span> 刪除
                 </a>
             </div>
@@ -45,16 +45,11 @@ module.exports = {
     }
   },
   methods: {
-    remove(index){
+    remove(id){
       if (!window.confirm('確定要刪除嗎？')) {
         return;
       }
-      this.deleteSong(index);
-    }
-  },
-  created(){
-    for (var i = 0; i<this.songs.length; i++) {
-      console.log(i + ' :' + this.songs[i].name);
+      this.deleteSong(id);
     }
   }
 };
