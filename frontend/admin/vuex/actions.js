@@ -1,17 +1,26 @@
 import api from '../api/';
-import type from './mutation-types.js';
+import types from './mutation-types.js';
 
 module.exports = {
   fetchSongs({dispatch}){
-    dispatch(type.FETCH_SONGS_REQEUST);
+    dispatch(types.FETCH_SONGS_REQEUST);
     
     api.fetchAllSongs(data => {
-      dispatch(type.FETCH_SONGS_SUCESS, data); 
+      dispatch(types.FETCH_SONGS_SUCESS, data); 
     });
   },
   addNewSong({dispatch}, newSong){
     api.addNewSong(newSong, data => {
-      dispatch('ADD_NEW_SONG', data); 
+      dispatch(types.ADD_NEW_SONG, data); 
+    });
+  },
+  editSong({dispatch}, id, newSong){
+    //TODO: Add api
+    dispatch(types.EDIT_SONG, id, newSong);
+  },
+  deleteSong({dispatch}, id){
+    api.deleteSong(id, data => {
+      dispatch(types.DELETE_SONG, data.id);
     });
   }
 };

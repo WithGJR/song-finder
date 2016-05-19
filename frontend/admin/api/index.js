@@ -1,16 +1,16 @@
 import 'whatwg-fetch';
 
 module.exports = {
-  fetchAllSongs(callback){
+  fetchAllSongs(successCallback){
     fetch('http://localhost:7777/songs').then(data => {
       data.json().then(json => {
-        callback(json); 
+        successCallback(json); 
       });
     }).catch(error => {
     }); 
   },
 
-  addNewSong(song, callback){
+  addNewSong(song, successCallback){
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
@@ -21,7 +21,18 @@ module.exports = {
       body: JSON.stringify(song)     
     }).then(data => {
       data.json().then(json => {
-        callback(json); 
+        successCallback(json); 
+      });
+    }).catch(error => {
+    }); 
+  },
+
+  deleteSong(index, successCallback){  
+    fetch('http://localhost:7777/songs/'+index, {
+      method: 'delete'
+    }).then(data => {
+      data.json().then(json => {
+        successCallback(json); 
       });
     }).catch(error => {
     }); 

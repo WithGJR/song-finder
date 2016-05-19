@@ -7,12 +7,15 @@ const router = new VueRouter();
 
 router.map({
     '/': {
-        component: require('./components/AdminPanel.vue')
+        component: require('./components/SongList.vue')
     },
     '/songs/new': {
-        component: require('./components/NewSongForm.vue')
+        component: require('./components/SongForm.vue')
+    },
+    'songs/:id/edit': {
+    	component: require('./components/SongForm.vue')
     }
 });
 
-const AdminApp = Vue.extend(require('./components/AdminApp.vue'));
-router.start(AdminApp, '#app');
+const App = Vue.extend(require('./components/App.vue'));
+router.start(App, '#app');

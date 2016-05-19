@@ -18,8 +18,15 @@ const mutations = {
     	
     },
     [types.ADD_NEW_SONG](state, song){
-    	// TODO
     	state.all.push(song);
+    },
+    [types.EDIT_SONG](state, id, newSong){
+        //TODO
+        state.all[id] = newSong;
+    },
+    [types.DELETE_SONG](state, id){
+        //TODO
+        state.all.splice(id, 1);
     }
 };
 

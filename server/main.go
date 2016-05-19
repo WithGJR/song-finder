@@ -40,7 +40,7 @@ func main() {
 	})
 
 	e.POST("/admin/login", func(c echo.Context) error {
-		admin := &models.Admin{}
+		admin := new(models.Admin)
 		if err := c.Bind(admin); err != nil {
 			return err
 		}

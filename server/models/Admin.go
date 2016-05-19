@@ -1,8 +1,8 @@
 package models
 
 type Admin struct {
-	Username string `form:"username" binding:"required"`
-	Password string `form:"password" binding:"required"`
+	Username string `form:"username"`
+	Password string `form:"password"`
 }
 
 func (this *Admin) IsValid() bool {
