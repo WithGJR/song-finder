@@ -1,7 +1,7 @@
 package models
 
 type Album struct {
-	Model
+	BaseModel
 	Name          string
 	Company       string
 	PublishedDate string

@@ -26,12 +26,14 @@ func main() {
 
 	e.GET("/songs", func(c echo.Context) error {
 		var songs []models.Song
-		models.FindSongs(&songs)
+		models.FindAll(&songs)
 		return c.JSON(http.StatusOK, songs)
 	})
 
 	e.POST("/songs", func(c echo.Context) error {
 		song := new(models.Song)
+		song.Init(song)
+
 		if err := c.Bind(song); err != nil {
 			return err
 		}
@@ -41,6 +43,8 @@ func main() {
 
 	e.PUT("/songs/:id", func(c echo.Context) error {
 		song := new(models.Song)
+		song.Init(song)
+
 		if err := c.Bind(song); err != nil {
 			return err
 		}
@@ -57,7 +61,9 @@ func main() {
 		}
 
 		song := new(models.Song)
+		song.Init(song)
 		song.ID = uint(id)
+
 		if err = song.Delete(); err != nil {
 			return err
 		}

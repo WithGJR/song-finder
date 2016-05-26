@@ -1,7 +1,7 @@
 package models
 
 type Singer struct {
-	Model
+	BaseModel
 	Name    string
 	Country string
 }
