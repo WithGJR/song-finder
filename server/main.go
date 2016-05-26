@@ -70,6 +70,53 @@ func main() {
 		return c.JSON(http.StatusOK, song.ID)
 	})
 
+	e.GET("/singers", func(c echo.Context) error {
+		var singers []models.Singer
+		models.FindAll(&singers)
+		return c.JSON(http.StatusOK, singers)
+	})
+
+	e.POST("/singers", func(c echo.Context) error {
+		singer := new(models.Singer)
+		singer.Init(singer)
+
+		if err := c.Bind(singer); err != nil {
+			return err
+		}
+
+		singer.Create()
+		return c.JSON(http.StatusOK, singer)
+	})
+
+	e.PUT("/singers/:id", func(c echo.Context) error {
+		singer := new(models.Singer)
+		singer.Init(singer)
+
+		if err := c.Bind(singer); err != nil {
+			return err
+		}
+
+		singer.Update()
+		return c.JSON(http.StatusOK, singer)
+	})
+
+	e.DELETE("/singers/:id", func(c echo.Context) error {
+		var id uint64
+		var err error
+		if id, err = strconv.ParseUint(c.Param("id"), 10, 64); err != nil {
+			return err
+		}
+
+		singer := new(models.Singer)
+		singer.Init(singer)
+		singer.ID = uint(id)
+
+		if err = singer.Delete(); err != nil {
+			return err
+		}
+		return c.JSON(http.StatusOK, singer.ID)
+	})
+
 	e.POST("/admin/login", func(c echo.Context) error {
 		admin := new(models.Admin)
 		if err := c.Bind(admin); err != nil {
