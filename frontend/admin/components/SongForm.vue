@@ -30,6 +30,7 @@
 <script>
 import { getSongs } from '../vuex/getters.js';
 import { addNewSong, updateSong } from '../vuex/actions.js';
+import BaseForm from '../mixins/BaseForm.js';
 
 module.exports = {
   vuex: {
@@ -41,23 +42,24 @@ module.exports = {
       updateSong
     }
   },
+  mixins: [BaseForm],
   data(){
     return {
       song: {Name: '', Lyricist: '', Composer: ''}
     };
   },
   computed: {
-    formType(){
-      return (this.$route.params.id === undefined) ? 'new' : 'edit';
+    newFormTitle() {
+      return '新增歌曲';
     },
-    title(){
-      return (this.formType === 'new') ? '新增歌曲' : '修改歌曲';
+    editFormTitle() {
+      return '修改歌曲';
     },
-    btnText(){
-      return (this.formType === 'new') ? '確認新增' : '確認更新';
+    newFormBtnText() {
+      return '確認新增';
     },
-    currentId(){
-      return parseInt(this.$route.params.id);
+    editFormBtnText() {
+      return '確認更新';
     },
     currentSong(){
       for (var i = 0; i < this.songs.length; i++) {
