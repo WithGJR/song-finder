@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 module.exports = new Vuex.Store({
     modules: {
-        songs
+        songs,
+        singers
     }
 });
