@@ -53,5 +53,22 @@ module.exports = {
       });
     }).catch(error => {
     }); 
-  }
+  },
+
+  addNewSinger(singer, successCallback){
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+
+    fetch('http://localhost:7777/singers', {
+      method: 'post',
+      headers: headers,
+      body: JSON.stringify(singer)     
+    }).then(data => {
+      data.json().then(json => {
+        successCallback(json); 
+      });
+    }).catch(error => {
+    }); 
+  },
 };

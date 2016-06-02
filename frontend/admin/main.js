@@ -14,6 +14,9 @@ router.map({
     },
     'songs/:id/edit': {
     	component: require('./components/SongForm.vue')
+    },
+    '/singers/new': {
+    	component: require('./components/SingerForm.vue')
     }
 });
 

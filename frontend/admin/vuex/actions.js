@@ -23,5 +23,11 @@ module.exports = {
     api.deleteSong(id, data => {
       dispatch(types.DELETE_SONG, data.id);
     });
+  },
+
+  addNewSinger({dispatch}, newSinger){
+    api.addNewSinger(newSinger, data => {
+      dispatch(types.ADD_NEW_SINGER, data);
+    });
   }
 };
