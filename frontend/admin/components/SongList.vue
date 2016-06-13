@@ -1,4 +1,10 @@
 <template>
+    <a v-link="{path: '/songs/new'}" class="btn btn-success btn-lg">
+      <span class="glyphicon glyphicon-plus"></span> 新增歌曲
+    </a>
+
+    <hr>
+
     <div>
     <div v-if="isLoading" class="text-center">
         <img src="/static/loading.gif" />
@@ -26,7 +32,7 @@
 
 <script>
 import { getSongs } from '../vuex/getters.js';
-import { fetchSongs, deleteSong } from '../vuex/actions.js';
+import { deleteSong } from '../vuex/actions.js';
 
 module.exports = {
   vuex: {
@@ -35,7 +41,6 @@ module.exports = {
       isLoading: ({ songs }) => songs.isLoading
     },
     actions: {
-      fetchSongs,
       deleteSong
     }
   },

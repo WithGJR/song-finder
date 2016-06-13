@@ -12,8 +12,6 @@
         <input type="input" class="form-control" id="country" placeholder="國家" v-model="singer.Country">
       </div>  
 
-     
-
       <input type="submit" class="btn btn-default" value="{{btnText}}" />
     </form>
   </div>
@@ -21,12 +19,19 @@
 
 <script>
 import BaseForm from '../mixins/BaseForm.js';
-import { addNewSinger } from '../vuex/actions.js';
+import { addNewSinger, updateSinger } from '../vuex/actions.js';
+import { getSingers } from '../vuex/getters.js';
+
+const singerModel = {Name: '', Country: ''};
 
 module.exports = {
   vuex: {
     actions: {
-      addNewSinger
+      addNewSinger,
+      updateSinger
+    },
+    getters: {
+      singers: getSingers
     }
   },
   mixins: [BaseForm],
@@ -42,21 +47,36 @@ module.exports = {
     },
     editFormBtnText() {
       return '確認更新';
+    },
+    currentSinger() {
+      for (var i = 0; i < this.singers.length; i++) {
+        if (this.singers[i].ID === this.currentId) {
+          return this.singers[i];
+        }
+      }
     }
   },
   methods: {
     submit() {
-      this.addNewSinger(this.singer);
-      this.singer = {Name: '', Country: ''};
+      if (this.formType === 'edit') {
+        console.log('edit');
+        this.updateSinger(this.currentId, this.singer);
+        console.log('edit');
+      }else{
+        this.addNewSinger(this.singer);  
+        this.singer = Object.assign({}, singerModel)
+      }
     }
   },
   data(){
     return {
-      singer: {Name: '', Country: ''}
+      singer: Object.assign({}, singerModel)
     };
   },
   ready(){
-    
+    if (this.formType == 'edit') {
+      this.singer = Object.assign({}, this.currentSinger);
+    }
   }
 };
 </script>

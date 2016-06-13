@@ -45,7 +45,7 @@ module.exports = {
   mixins: [BaseForm],
   data(){
     return {
-      song: {Name: '', Lyricist: '', Composer: ''}
+      song: {Name: '', Lyricist: '', Composer: '', Length: ''}
     };
   },
   computed: {

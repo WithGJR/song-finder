@@ -13,11 +13,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import store from '../vuex/store.js';
 import NavBar from '../components/NavBar.vue';
-import { fetchSongs } from '../vuex/actions.js';
+import { fetchSongs, fetchSingers } from '../vuex/actions.js';
 
 Vue.use(Vuex);
 
 fetchSongs(store);
+fetchSingers(store);
 
 module.exports = {
   store,

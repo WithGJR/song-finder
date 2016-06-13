@@ -1,4 +1,10 @@
 <template>
+    <a v-link="{path: '/singers/new'}" class="btn btn-success btn-lg">
+      <span class="glyphicon glyphicon-plus"></span> 新增歌手
+    </a>
+  
+    <hr>
+
     <div>
     <ul class="list-group">
         <li v-for="singer in singers" class="list-group-item">
@@ -19,11 +25,23 @@
 
 <script>
 import { getSingers } from '../vuex/getters.js';
+import { deleteSinger } from '../vuex/actions.js';
 
 module.exports = {
   vuex: {
     getters: {
       singers: getSingers
+    },
+    actions: {
+      deleteSinger
+    }
+  },
+  methods: {
+    remove(id){
+      if (!window.confirm('確定要刪除嗎？')) {
+        return;
+      }
+      this.deleteSinger(id);
     }
   }
 };

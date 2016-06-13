@@ -12,7 +12,7 @@ router.map({
     '/songs/new': {
         component: require('./components/SongForm.vue')
     },
-    'songs/:id/edit': {
+    '/songs/:id/edit': {
     	component: require('./components/SongForm.vue')
     },
     '/singers': {
@@ -20,7 +20,10 @@ router.map({
     },
     '/singers/new': {
     	component: require('./components/SingerForm.vue')
-    }
+    },
+    '/singers/:id/edit': {
+        component: require('./components/SingerForm.vue')
+    },
 });
 
 const App = Vue.extend(require('./components/App.vue'));
