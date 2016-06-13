@@ -3,8 +3,8 @@ import 'whatwg-fetch';
 module.exports = {
   fetchAllSongs(successCallback){
     fetch('http://localhost:7777/songs').then(data => {
-      data.json().then(json => {
-        successCallback(json); 
+      data.json().then(songs => {
+        successCallback(songs); 
       });
     }).catch(error => {
     }); 
@@ -20,8 +20,8 @@ module.exports = {
       headers: headers,
       body: JSON.stringify(song)     
     }).then(data => {
-      data.json().then(json => {
-        successCallback(json); 
+      data.json().then(createdSong => {
+        successCallback(createdSong); 
       });
     }).catch(error => {
     }); 
@@ -63,6 +63,7 @@ module.exports = {
     }).catch(error => {
     }); 
   },
+
   addNewSinger(singer, successCallback){
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -79,6 +80,7 @@ module.exports = {
     }).catch(error => {
     }); 
   },
+
   updateSinger(id, singer, successCallback){
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -95,8 +97,58 @@ module.exports = {
     }).catch(error => {
     }); 
   },
+
   deleteSinger(id, successCallback){
     fetch('http://localhost:7777/singers/'+id, {
+      method: 'delete'
+    }).then(data => {
+      data.json().then(id => {
+        successCallback(id); 
+      });
+    }).catch(error => {
+    }); 
+  },
+
+  fetchAllAlbums(successCallback){
+    fetch('http://localhost:7777/albums').then(data => {
+      data.json().then(albums => {
+        successCallback(albums); 
+      });
+    }).catch(error => {
+    }); 
+  },
+  uploadAlbumPhoto(albumId, photo, successCallback){
+    var formData = new FormData();
+    formData.append('file', photo);
+
+    fetch('http://localhost:7777/albums/'+albumId+'/image-upload', {
+       method: 'post',
+       body: formData
+    }).then(data => {
+      data.json().then(updatedAlbum => {
+        successCallback(updatedAlbum); 
+      });
+    }).catch(error => {
+    }); 
+  },
+  addNewAlbum(album, successCallback){
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+
+    fetch('http://localhost:7777/albums', {
+      method: 'post',
+      headers: headers,
+      body: JSON.stringify(album)     
+    }).then(data => {
+      data.json().then(json => {
+        successCallback(json); 
+      });
+    }).catch(error => {
+    }); 
+  },
+  deleteAlbum(id, successCallback){
+    fetch('http://localhost:7777/albums/'+id, {
       method: 'delete'
     }).then(data => {
       data.json().then(id => {

@@ -29,8 +29,12 @@ const mutations = {
     }
   },
   [types.DELETE_SONG](state, id){
-    //TODO
-    state.all.splice(id, 1);
+    for (var i = 0; i < state.all.length; i++) {
+      if (state.all[i].ID === id) {
+        state.all.splice(i, 1);
+        return;
+      }
+    }
   }
 };
 

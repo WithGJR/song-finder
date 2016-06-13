@@ -5,7 +5,9 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
+	"io"
 	"net/http"
+	"os"
 	"song-finder/server/constants"
 	"song-finder/server/models"
 	"strconv"
@@ -115,6 +117,92 @@ func main() {
 			return err
 		}
 		return c.JSON(http.StatusOK, singer.ID)
+	})
+
+	e.GET("/albums", func(c echo.Context) error {
+		var albums []models.Album
+		models.FindAll(&albums)
+		return c.JSON(http.StatusOK, albums)
+	})
+
+	e.POST("/albums", func(c echo.Context) error {
+		album := new(models.Album)
+		album.Init(album)
+
+		if err := c.Bind(album); err != nil {
+			return err
+		}
+
+		album.Create()
+		return c.JSON(http.StatusOK, album)
+	})
+
+	e.PUT("/albums/:id", func(c echo.Context) error {
+		album := new(models.Album)
+		album.Init(album)
+
+		if err := c.Bind(album); err != nil {
+			return err
+		}
+
+		album.Update()
+		return c.JSON(http.StatusOK, album)
+	})
+
+	e.DELETE("/albums/:id", func(c echo.Context) error {
+		var id uint64
+		var err error
+		if id, err = strconv.ParseUint(c.Param("id"), 10, 64); err != nil {
+			return err
+		}
+
+		album := new(models.Album)
+		album.Init(album)
+		album.ID = uint(id)
+
+		if err = album.Delete(); err != nil {
+			return err
+		}
+		return c.JSON(http.StatusOK, album.ID)
+	})
+
+	e.POST("/albums/:id/image-upload", func(c echo.Context) error {
+		var id uint64
+		var err error
+		if id, err = strconv.ParseUint(c.Param("id"), 10, 64); err != nil {
+			return err
+		}
+
+		file, err := c.FormFile("file")
+		if err != nil {
+			return err
+		}
+		src, err := file.Open()
+		if err != nil {
+			return err
+		}
+		defer src.Close()
+
+		// Destination
+		dst, err := os.Create("./static/images/" + file.Filename)
+		if err != nil {
+			return err
+		}
+		defer dst.Close()
+
+		// Copy
+		if _, err = io.Copy(dst, src); err != nil {
+			return err
+		}
+
+		album := new(models.Album)
+		album.Init(album)
+		album.ID = uint(id)
+		models.First(album)
+
+		album.Photo = file.Filename
+		album.Update()
+		return c.JSON(http.StatusOK, album)
 	})
 
 	e.POST("/admin/login", func(c echo.Context) error {

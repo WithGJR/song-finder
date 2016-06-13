@@ -15,6 +15,16 @@ func (this *BaseModel) Init(childModel interface{}) {
 	this.childModel = childModel
 }
 
+func First(modelInstances interface{}) error {
+	db, err := connectDB()
+	if err != nil {
+		return err
+	}
+	db.First(modelInstances)
+	db.Close()
+	return nil
+}
+
 func FindAll(modelInstances interface{}) error {
 	db, err := connectDB()
 	if err != nil {

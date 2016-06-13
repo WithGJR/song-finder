@@ -6,6 +6,9 @@
 		<li role="presentation">
 			<a v-link="{path: '/singers'}">歌手清單</a>
 		</li>
+		<li role="presentation">
+			<a v-link="{path: '/albums'}">專輯清單</a>
+		</li>
 	</ul>
 </template>
 

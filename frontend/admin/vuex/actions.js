@@ -5,13 +5,13 @@ module.exports = {
   fetchSongs({dispatch}){
     dispatch(types.FETCH_SONGS_REQEUST);
     
-    api.fetchAllSongs(data => {
-      dispatch(types.FETCH_SONGS_SUCESS, data); 
+    api.fetchAllSongs(songs => {
+      dispatch(types.FETCH_SONGS_SUCESS, songs); 
     });
   },
   addNewSong({dispatch}, newSong){
-    api.addNewSong(newSong, data => {
-      dispatch(types.ADD_NEW_SONG, data); 
+    api.addNewSong(newSong, song => {
+      dispatch(types.ADD_NEW_SONG, song); 
     });
   },
   updateSong({dispatch}, id, song){
@@ -20,19 +20,19 @@ module.exports = {
     });
   },
   deleteSong({dispatch}, id){
-    api.deleteSong(id, data => {
-      dispatch(types.DELETE_SONG, data.id);
+    api.deleteSong(id, deletedSongId => {
+      dispatch(types.DELETE_SONG, deletedSongId);
     });
   },
 
   fetchSingers({dispatch}){
-    api.fetchAllSingers(data => {
-      dispatch(types.FETCH_SINGERS_SUCESS, data); 
+    api.fetchAllSingers(singers => {
+      dispatch(types.FETCH_SINGERS_SUCESS, singers); 
     });
   },
   addNewSinger({dispatch}, newSinger){
-    api.addNewSinger(newSinger, data => {
-      dispatch(types.ADD_NEW_SINGER, data);
+    api.addNewSinger(newSinger, singer => {
+      dispatch(types.ADD_NEW_SINGER, singer);
     });
   },
   updateSinger({dispatch}, id, singer){
@@ -41,8 +41,29 @@ module.exports = {
     });
   },
   deleteSinger({dispatch}, id){
-    api.deleteSinger(id, data => {
-      dispatch(types.DELETE_SINGER, data.id);
+    api.deleteSinger(id, deletedSingerId => {
+      dispatch(types.DELETE_SINGER, deletedSingerId);
+    });
+  },
+
+  fetchAlbums({dispatch}){
+    api.fetchAllAlbums(albums => {
+      dispatch(types.FETCH_ALBUMS_SUCESS, albums); 
+    });
+  },
+  addNewAlbum({dispatch}, newAlbum){
+    api.addNewAlbum(newAlbum, album => {
+      dispatch(types.ADD_NEW_ALBUM, album); 
+    });
+  },
+  uploadAlbumPhoto({dispatch}, albumId, photo){
+    api.uploadAlbumPhoto(albumId, photo, updatedAlbum => {
+      dispatch(types.UPLOAD_ALBUM_PHOTO_SUCESS, updatedAlbum); 
+    });
+  },
+  deleteAlbum({dispatch}, id){
+    api.deleteAlbum(id, deletedAlbumId => {
+      dispatch(types.DELETE_ALBUM, deletedAlbumId);
     });
   }
 };

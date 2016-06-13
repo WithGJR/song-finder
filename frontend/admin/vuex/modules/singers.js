@@ -14,13 +14,19 @@ const mutations = {
   [types.UPDATE_SINGER_SUCESS](state, id, newSinger){
     for (var i = 0; i < state.all.length; i++) {
       if (state.all[i].ID === id) {
-        state.all[i] = newSinger;
+        state.all.splice(i, 1, newSinger);
         return;
       }
     }
   },
   [types.DELETE_SINGER](state, id){
-    state.all.splice(id, 1);
+    for (var i = 0; i < state.all.length; i++) {
+      if (state.all[i].ID === id) {
+        state.all.splice(i, 1);
+        return;
+      }
+    }
+    
   }
 };
 
