@@ -1,8 +1,10 @@
 import 'whatwg-fetch';
 
+const _domainName = 'http://localhost:7777';
+
 module.exports = {
   fetchAllSongs(successCallback){
-    fetch('http://localhost:7777/songs').then(data => {
+    fetch(_domainName + '/songs').then(data => {
       data.json().then(songs => {
         successCallback(songs); 
       });
@@ -22,7 +24,7 @@ module.exports = {
       delete song.AlbumId;
     }
 
-    fetch('http://localhost:7777/songs', {
+    fetch(_domainName + '/songs', {
       method: 'post',
       headers: headers,
       body: JSON.stringify(song)     
@@ -39,7 +41,7 @@ module.exports = {
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
 
-    fetch('http://localhost:7777/songs/'+id, {
+    fetch(_domainName + '/songs/' + id, {
       method: 'put',
       headers: headers,
       body: JSON.stringify(song)     
@@ -52,7 +54,7 @@ module.exports = {
   },
 
   deleteSong(id, successCallback){  
-    fetch('http://localhost:7777/songs/'+id, {
+    fetch(_domainName + '/songs/'+id, {
       method: 'delete'
     }).then(data => {
       data.json().then(id => {
@@ -63,7 +65,7 @@ module.exports = {
   },
 
   fetchAllSingers(successCallback){
-    fetch('http://localhost:7777/singers').then(data => {
+    fetch(_domainName + '/singers').then(data => {
       data.json().then(json => {
         successCallback(json); 
       });
@@ -76,7 +78,7 @@ module.exports = {
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
 
-    fetch('http://localhost:7777/singers', {
+    fetch(_domainName + '/singers', {
       method: 'post',
       headers: headers,
       body: JSON.stringify(singer)     
@@ -93,7 +95,7 @@ module.exports = {
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
 
-    fetch('http://localhost:7777/singers/'+id, {
+    fetch(_domainName + '/singers/' + id, {
       method: 'put',
       headers: headers,
       body: JSON.stringify(singer)     
@@ -106,7 +108,7 @@ module.exports = {
   },
 
   deleteSinger(id, successCallback){
-    fetch('http://localhost:7777/singers/'+id, {
+    fetch(_domainName + '/singers/'+id, {
       method: 'delete'
     }).then(data => {
       data.json().then(id => {
@@ -117,7 +119,7 @@ module.exports = {
   },
 
   fetchAllAlbums(successCallback){
-    fetch('http://localhost:7777/albums').then(data => {
+    fetch(_domainName + '/albums').then(data => {
       data.json().then(albums => {
         successCallback(albums); 
       });
@@ -128,7 +130,7 @@ module.exports = {
     var formData = new FormData();
     formData.append('file', photo);
 
-    fetch('http://localhost:7777/albums/'+albumId+'/image-upload', {
+    fetch(_domainName + '/albums/' + albumId + '/image-upload', {
        method: 'post',
        body: formData
     }).then(data => {
@@ -143,7 +145,7 @@ module.exports = {
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
 
-    fetch('http://localhost:7777/albums', {
+    fetch(_domainName + '/albums', {
       method: 'post',
       headers: headers,
       body: JSON.stringify(album)     
@@ -155,7 +157,7 @@ module.exports = {
     }); 
   },
   deleteAlbum(id, successCallback){
-    fetch('http://localhost:7777/albums/'+id, {
+    fetch(_domainName + '/albums/' + id, {
       method: 'delete'
     }).then(data => {
       data.json().then(id => {
