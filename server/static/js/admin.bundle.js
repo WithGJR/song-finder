@@ -13147,15 +13147,22 @@
 	      dispatch(_mutationTypes2.default.ADD_NEW_ALBUM, album);
 	    });
 	  },
-	  uploadAlbumPhoto: function uploadAlbumPhoto(_ref11, albumId, photo) {
+	  updateAlbum: function updateAlbum(_ref11, id, song) {
 	    var dispatch = _ref11.dispatch;
+
+	    _api2.default.updateAlbum(id, song, function (updatedAlbum) {
+	      dispatch(_mutationTypes2.default.UPDATE_ALBUM_SUCESS, updatedAlbum.ID, updatedAlbum);
+	    });
+	  },
+	  uploadAlbumPhoto: function uploadAlbumPhoto(_ref12, albumId, photo) {
+	    var dispatch = _ref12.dispatch;
 
 	    _api2.default.uploadAlbumPhoto(albumId, photo, function (updatedAlbum) {
 	      dispatch(_mutationTypes2.default.UPLOAD_ALBUM_PHOTO_SUCESS, updatedAlbum);
 	    });
 	  },
-	  deleteAlbum: function deleteAlbum(_ref12, id) {
-	    var dispatch = _ref12.dispatch;
+	  deleteAlbum: function deleteAlbum(_ref13, id) {
+	    var dispatch = _ref13.dispatch;
 
 	    _api2.default.deleteAlbum(id, function (deletedAlbumId) {
 	      dispatch(_mutationTypes2.default.DELETE_ALBUM, deletedAlbumId);
@@ -13320,6 +13327,22 @@
 	    }).then(function (data) {
 	      data.json().then(function (json) {
 	        successCallback(json);
+	      });
+	    }).catch(function (error) {});
+	  },
+	  updateAlbum: function updateAlbum(id, album, successCallback) {
+	    var headers = new Headers();
+	    headers.append('Content-Type', 'application/json');
+	    headers.append('Accept', 'application/json');
+
+	    fetch(_domainName + '/albums/' + id, {
+	      method: 'put',
+	      headers: headers,
+	      credentials: 'same-origin',
+	      body: JSON.stringify(album)
+	    }).then(function (data) {
+	      data.json().then(function (updatedAlbum) {
+	        successCallback(updatedAlbum);
 	      });
 	    }).catch(function (error) {});
 	  },
@@ -13797,6 +13820,7 @@
 
 	  FETCH_ALBUMS_SUCESS: 'FETCH_ALBUMS_SUCESS',
 	  ADD_NEW_ALBUM: 'ADD_NEW_ALBUM',
+	  UPDATE_ALBUM_SUCESS: 'UPDATE_ALBUM_SUCESS',
 	  DELETE_ALBUM: 'DELETE_ALBUM',
 	  UPLOAD_ALBUM_PHOTO_SUCESS: 'UPLOAD_ALBUM_PHOTO_SUCESS'
 	};
@@ -14623,9 +14647,7 @@
 	  methods: {
 	    submit: function submit() {
 	      if (this.formType === 'edit') {
-	        console.log('edit');
 	        this.updateSinger(this.currentId, this.singer);
-	        console.log('edit');
 	      } else {
 	        this.addNewSinger(this.singer);
 	        this.singer = (0, _assign2.default)({}, singerModel);
@@ -14775,7 +14797,8 @@
 	module.exports = {
 	  vuex: {
 	    actions: {
-	      addNewAlbum: _actions.addNewAlbum
+	      addNewAlbum: _actions.addNewAlbum,
+	      updateAlbum: _actions.updateAlbum
 	    },
 	    getters: {
 	      albums: _getters.getAlbums
@@ -14805,7 +14828,9 @@
 	  },
 	  methods: {
 	    submit: function submit() {
-	      if (this.formType === 'edit') {} else {
+	      if (this.formType === 'edit') {
+	        this.updateAlbum(this.currentId, this.album);
+	      } else {
 	        this.addNewAlbum(this.album);
 	        this.album = (0, _assign2.default)({}, this.currentAlbum);
 	      }
@@ -14827,7 +14852,7 @@
 /* 64 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div>\n  <h2>{{title}}</h2>\n  <form v-on:submit.prevent=\"submit\">\n    <div class=\"form-group\">\n      <label for=\"name\" class=\"col-sm-2 control-label\">專輯姓名</label>\n      <input type=\"input\" class=\"form-control\" id=\"name\" placeholder=\"專輯姓名\" v-model=\"album.Name\">\n    </div>  \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">發行公司</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"發行公司\" v-model=\"album.Company\">\n    </div> \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">發行日期</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"發行日期\" v-model=\"album.PublishedDate\">\n    </div>   \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">語言</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"語言\" v-model=\"album.Language\">\n    </div> \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">得獎紀錄</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"得獎紀錄\" v-model=\"album.Reward\">\n    </div> \n\n    <input type=\"submit\" class=\"btn btn-default\" value=\"{{btnText}}\" />\n  </form>    \n</div>\n";
+	module.exports = "\n<div>\n  <h2>{{title}}</h2>\n  <form v-on:submit.prevent=\"submit\">\n    <div class=\"form-group\">\n      <label for=\"name\" class=\"col-sm-2 control-label\">專輯姓名</label>\n      <input type=\"input\" class=\"form-control\" id=\"name\" placeholder=\"專輯姓名\" v-model=\"album.Name\">\n    </div>  \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">發行公司</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"發行公司\" v-model=\"album.Company\">\n    </div> \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">發行日期</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"發行日期\" v-model=\"album.PublishedDate\">\n    </div>   \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">語言</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"語言\" v-model=\"album.Language\">\n    </div> \n\n    <div class=\"form-group\">\n      <label for=\"country\" class=\"col-sm-2 control-label\">提名</label>\n      <input type=\"input\" class=\"form-control\" id=\"country\" placeholder=\"提名\" v-model=\"album.Reward\">\n    </div> \n\n    <input type=\"submit\" class=\"btn btn-default\" value=\"{{btnText}}\" />\n  </form>    \n</div>\n";
 
 /***/ },
 /* 65 */
@@ -15788,6 +15813,13 @@
 	  for (var i = 0; i < state.all.length; i++) {
 	    if (state.all[i].ID === upadatedAlbum.ID) {
 	      state.all.splice(i, 1, upadatedAlbum);
+	    }
+	  }
+	}), _defineProperty(_mutations, _mutationTypes2.default.UPDATE_ALBUM_SUCESS, function (state, id, newAlbum) {
+	  for (var i = 0; i < state.all.length; i++) {
+	    if (state.all[i].ID === id) {
+	      state.all.splice(i, 1, newAlbum);
+	      return;
 	    }
 	  }
 	}), _defineProperty(_mutations, _mutationTypes2.default.DELETE_ALBUM, function (state, deletedAlbumId) {

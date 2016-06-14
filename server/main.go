@@ -53,6 +53,12 @@ func main() {
 		}
 	})
 
+	e.File("/", "./index.html")
+	e.File("/singer", "./singer.html")
+	e.File("/album", "./album.html")
+	e.File("/song", "./song.html")
+	e.File("/search", "./search.html")
+
 	e.File("/admin/login", "./login.html")
 
 	e.GET("/admin", func(c echo.Context) error {

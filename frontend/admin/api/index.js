@@ -171,6 +171,23 @@ module.exports = {
     }).catch(error => {
     }); 
   },
+  updateAlbum(id, album, successCallback){
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+
+    fetch(_domainName + '/albums/' + id, {
+      method: 'put',
+      headers: headers,
+      credentials: 'same-origin',
+      body: JSON.stringify(album)     
+    }).then(data => {
+      data.json().then(updatedAlbum => {
+        successCallback(updatedAlbum); 
+      });
+    }).catch(error => {
+    }); 
+  },
   deleteAlbum(id, successCallback){
     fetch(_domainName + '/albums/' + id, {
       method: 'delete',

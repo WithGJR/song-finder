@@ -59,9 +59,7 @@ module.exports = {
   methods: {
     submit() {
       if (this.formType === 'edit') {
-        console.log('edit');
         this.updateSinger(this.currentId, this.singer);
-        console.log('edit');
       }else{
         this.addNewSinger(this.singer);  
         this.singer = Object.assign({}, singerModel)

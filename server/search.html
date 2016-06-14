@@ -1,0 +1,104 @@
+<!DOCTYPE>
+<html>
+<head>
+<link href="/static/images/icon.ico" rel="SHORTCUT ICON">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+function HideContent(d) {
+document.getElementById(d).style.display = "none";
+}
+function ShowContent(d) {
+document.getElementById(d).style.display = "block";
+}
+function ReverseDisplay(d) {
+if(document.getElementById(d).style.display == "none") { document.getElementById(d).style.display = "block"; }
+else { document.getElementById(d).style.display = "none"; }
+}
+</script>
+<title>IM Music</title>
+<style type="text/css">
+body {
+	margin: 0px;
+	background-image: url(/static/images/background.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-attachment: fixed;
+}
+input {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+}
+#header{
+	background-color: rgba(255,255,255,0.3);
+	width: 1200px;
+}
+a {
+	font-family: "Arial Black", Gadget, sans-serif;	
+	color: rgb(255,255,255);
+	font-size: 28px;
+	text-decoration: none;
+}
+a:hover {
+	font-family: "Arial Black", Gadget, sans-serif;
+	color: rgb(0,0,0);
+	font-size: 28px;
+	font-weight: bold;
+}
+#content{
+	width: 1200px;
+}
+#contentL {
+	float: left;
+	width: 200px;
+	background-color: rgba(51,204,255,0.5);
+}
+#contentR {
+	background-color: rgba(255,255,255,0.5);
+	float: right;
+	width: 1000px;
+}
+td {
+	font-family: "微軟正黑體";
+	color: rgba(0,0,0,0.6);
+	font-size: 30px;
+	text-align: justify;
+}
+.top {
+	font-family: Arial, Helvetica, sans-serif;
+	color: rgba(0,0,0,0.6);
+	font-size: 36px;
+	font-weight: bold;
+	font-style: italic;
+}
+</style>
+</head>
+
+<body>
+<div data-role="page" align="center">
+<div id="header">
+  <table width="1200" border="0">
+  <tr>
+    <td width="70"><a href="/"><img src="/static/images/logo.jpg" width="50" height="50"></a></td>
+    <td class="top">Music is the only thing that gets your mind off of everything else.</td>
+  </tr>
+  </table>
+  <input style="width:1100px;height:40px" />
+  <input type="button" value="search" style="width:95px;height:40px" />
+</div>
+<div id="content">
+<div id="contentL">
+<table border="0" width="200">
+<tr><td align="center"><a href="/">Home</a></td></tr>
+<tr><td align="center"><a href="/singer">Singers</a></td></tr>
+<tr><td align="center"><a href="/album">Albums</a></td></tr>
+<tr><td align="center"><a href="/song">Songs</a></td></tr>
+<tr><td align="center"><a href="/search">Search</a></td></tr>
+</table>
+</div>
+<div id="contentR">
+
+</div>
+</div>
+</div>
+</body>
+</html>

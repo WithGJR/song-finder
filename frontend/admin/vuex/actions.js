@@ -57,6 +57,11 @@ module.exports = {
       dispatch(types.ADD_NEW_ALBUM, album); 
     });
   },
+  updateAlbum({dispatch}, id, song){
+    api.updateAlbum(id, song, updatedAlbum => {
+      dispatch(types.UPDATE_ALBUM_SUCESS, updatedAlbum.ID, updatedAlbum);  
+    });
+  },
   uploadAlbumPhoto({dispatch}, albumId, photo){
     api.uploadAlbumPhoto(albumId, photo, updatedAlbum => {
       dispatch(types.UPLOAD_ALBUM_PHOTO_SUCESS, updatedAlbum); 

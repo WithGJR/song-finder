@@ -23,8 +23,8 @@
       </div> 
 
       <div class="form-group">
-        <label for="country" class="col-sm-2 control-label">得獎紀錄</label>
-        <input type="input" class="form-control" id="country" placeholder="得獎紀錄" v-model="album.Reward">
+        <label for="country" class="col-sm-2 control-label">提名</label>
+        <input type="input" class="form-control" id="country" placeholder="提名" v-model="album.Reward">
       </div> 
 
       <input type="submit" class="btn btn-default" value="{{btnText}}" />
@@ -34,7 +34,7 @@
 
 <script>
 import BaseForm from '../mixins/BaseForm.js';
-import { addNewAlbum } from '../vuex/actions.js';
+import { addNewAlbum, updateAlbum } from '../vuex/actions.js';
 import { getAlbums } from '../vuex/getters.js';
 
 const albumModel = {Name: '', Company: '', PublishedDate: '', Language: '', Reward: '', Photo: ''};
@@ -42,7 +42,8 @@ const albumModel = {Name: '', Company: '', PublishedDate: '', Language: '', Rewa
 module.exports = {
   vuex: {
     actions: {
-      addNewAlbum
+      addNewAlbum,
+      updateAlbum
     },
     getters: {
       albums: getAlbums
@@ -73,7 +74,7 @@ module.exports = {
   methods: {
     submit() {
       if (this.formType === 'edit') {
-        
+        this.updateAlbum(this.currentId, this.album);
       }else{
         this.addNewAlbum(this.album);
         this.album = Object.assign({}, this.currentAlbum);

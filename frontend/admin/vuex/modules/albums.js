@@ -18,6 +18,14 @@ const mutations = {
       }
     }
   },
+  [types.UPDATE_ALBUM_SUCESS](state, id, newAlbum){
+    for (var i = 0; i < state.all.length; i++) {
+      if (state.all[i].ID === id) {
+        state.all.splice(i, 1, newAlbum);
+        return;
+      }
+    }
+  },
   [types.DELETE_ALBUM](state, deletedAlbumId){
     for (var i = 0; i < state.all.length; i++) {
       if (state.all[i].ID === deletedAlbumId) {
