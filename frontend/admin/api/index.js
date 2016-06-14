@@ -1,10 +1,13 @@
 import 'whatwg-fetch';
 
-const _domainName = 'http://localhost:7777';
+// In Development mode, please use: http://localhost:7777
+const _domainName = ''; // In Production
 
 module.exports = {
   fetchAllSongs(successCallback){
-    fetch(_domainName + '/songs').then(data => {
+    fetch(_domainName + '/songs', {
+      credentials: 'same-origin'
+    }).then(data => {
       data.json().then(songs => {
         successCallback(songs); 
       });
@@ -26,6 +29,7 @@ module.exports = {
 
     fetch(_domainName + '/songs', {
       method: 'post',
+      credentials: 'same-origin',
       headers: headers,
       body: JSON.stringify(song)     
     }).then(data => {
@@ -44,6 +48,7 @@ module.exports = {
     fetch(_domainName + '/songs/' + id, {
       method: 'put',
       headers: headers,
+      credentials: 'same-origin',
       body: JSON.stringify(song)     
     }).then(data => {
       data.json().then(updatedSong => {
@@ -55,7 +60,8 @@ module.exports = {
 
   deleteSong(id, successCallback){  
     fetch(_domainName + '/songs/'+id, {
-      method: 'delete'
+      method: 'delete',
+      credentials: 'same-origin'
     }).then(data => {
       data.json().then(id => {
         successCallback(id); 
@@ -65,7 +71,9 @@ module.exports = {
   },
 
   fetchAllSingers(successCallback){
-    fetch(_domainName + '/singers').then(data => {
+    fetch(_domainName + '/singers', {
+      credentials: 'same-origin'
+    }).then(data => {
       data.json().then(json => {
         successCallback(json); 
       });
@@ -81,6 +89,7 @@ module.exports = {
     fetch(_domainName + '/singers', {
       method: 'post',
       headers: headers,
+      credentials: 'same-origin',
       body: JSON.stringify(singer)     
     }).then(data => {
       data.json().then(json => {
@@ -98,6 +107,7 @@ module.exports = {
     fetch(_domainName + '/singers/' + id, {
       method: 'put',
       headers: headers,
+      credentials: 'same-origin',
       body: JSON.stringify(singer)     
     }).then(data => {
       data.json().then(updatedSinger => {
@@ -109,7 +119,8 @@ module.exports = {
 
   deleteSinger(id, successCallback){
     fetch(_domainName + '/singers/'+id, {
-      method: 'delete'
+      method: 'delete',
+      credentials: 'same-origin'
     }).then(data => {
       data.json().then(id => {
         successCallback(id); 
@@ -119,7 +130,9 @@ module.exports = {
   },
 
   fetchAllAlbums(successCallback){
-    fetch(_domainName + '/albums').then(data => {
+    fetch(_domainName + '/albums', {
+      credentials: 'same-origin'
+    }).then(data => {
       data.json().then(albums => {
         successCallback(albums); 
       });
@@ -132,6 +145,7 @@ module.exports = {
 
     fetch(_domainName + '/albums/' + albumId + '/image-upload', {
        method: 'post',
+       credentials: 'same-origin',
        body: formData
     }).then(data => {
       data.json().then(updatedAlbum => {
@@ -148,6 +162,7 @@ module.exports = {
     fetch(_domainName + '/albums', {
       method: 'post',
       headers: headers,
+      credentials: 'same-origin',
       body: JSON.stringify(album)     
     }).then(data => {
       data.json().then(json => {
@@ -158,7 +173,8 @@ module.exports = {
   },
   deleteAlbum(id, successCallback){
     fetch(_domainName + '/albums/' + id, {
-      method: 'delete'
+      method: 'delete',
+      credentials: 'same-origin'
     }).then(data => {
       data.json().then(id => {
         successCallback(id); 

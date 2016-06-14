@@ -3,7 +3,7 @@ module.exports = {
     admin: './admin/main.js'
   },
   output: {
-    path: './build',
+    path: '../server/static/js',
     filename: '[name].bundle.js' 
   },
   module: {
