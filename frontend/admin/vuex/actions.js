@@ -26,6 +26,7 @@ module.exports = {
   },
 
   fetchSingers({dispatch}){
+    dispatch(types.FETCH_SINGERS_REQUEST); 
     api.fetchAllSingers(singers => {
       dispatch(types.FETCH_SINGERS_SUCESS, singers); 
     });

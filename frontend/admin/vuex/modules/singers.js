@@ -1,12 +1,17 @@
 import types from '../mutation-types.js';
 
 const state = {
-  all: []
+  all: [],
+  isLoading: false
 };
 
 const mutations = {
+  [types.FETCH_SINGERS_REQUEST](state){
+    state.isLoading = true;
+  },
   [types.FETCH_SINGERS_SUCESS](state, singers){
     state.all = singers;
+    state.isLoading = false;
   },
   [types.ADD_NEW_SINGER](state, singer){
     state.all.push(singer);

@@ -10,11 +10,26 @@
         <img src="/static/loading.gif" />
     </div>
     <div v-if="haveNoSongs" class="alert alert-warning">
-        找不到歌曲
+        目前還沒有新增歌曲
     </div>
     
     <ul class="list-group">
         <li v-for="song in songs" class="list-group-item">
+            <div>
+              <span class="label label-default">
+                <span class="glyphicon glyphicon-music"></span> 專輯：
+                {{albumName(song.AlbumId)}}
+              </span>
+            </div>
+            
+            <div>
+              <span class="label label-default">
+                <span class="glyphicon glyphicon-user"></span> 歌手：
+                {{singerName(song.SingerId)}}
+              </span>
+            </div>
+
+
             <h2>{{song.Name}}</h2>
             <hr>
             <div>
@@ -31,13 +46,15 @@
 </template>
 
 <script>
-import { getSongs } from '../vuex/getters.js';
+import { getSongs, getSingers, getAlbums } from '../vuex/getters.js';
 import { deleteSong } from '../vuex/actions.js';
 
 module.exports = {
   vuex: {
     getters: {
       songs: getSongs,
+      singers: getSingers,
+      albums: getAlbums,
       isLoading: ({ songs }) => songs.isLoading
     },
     actions: {
@@ -50,6 +67,20 @@ module.exports = {
     }
   },
   methods: {
+    albumName(albumId){
+      for (var i = 0; i < this.albums.length; i++) {
+        if (this.albums[i].ID === albumId) {
+          return this.albums[i].Name;
+        }
+      }
+    },
+    singerName(singerId){
+      for (var i = 0; i < this.singers.length; i++) {
+        if (this.singers[i].ID === singerId) {
+          return this.singers[i].Name;
+        }
+      }
+    },
     remove(id){
       if (!window.confirm('確定要刪除嗎？')) {
         return;

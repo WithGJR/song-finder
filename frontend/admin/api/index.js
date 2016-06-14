@@ -15,6 +15,13 @@ module.exports = {
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
 
+    if(song.SingerId === null) {
+      delete song.SingerId;
+    }
+    if(song.AlbumId === null) {
+      delete song.AlbumId;
+    }
+
     fetch('http://localhost:7777/songs', {
       method: 'post',
       headers: headers,

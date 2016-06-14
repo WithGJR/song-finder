@@ -6,6 +6,13 @@
     <hr>
 
     <div>
+    <div v-if="isLoading" class="text-center">
+        <img src="/static/loading.gif" />
+    </div>
+    <div v-if="haveNoSingers" class="alert alert-warning">
+        目前還沒有新增歌手
+    </div>
+
     <ul class="list-group">
         <li v-for="singer in singers" class="list-group-item">
             <h2>{{singer.Name}}</h2>
@@ -30,10 +37,16 @@ import { deleteSinger } from '../vuex/actions.js';
 module.exports = {
   vuex: {
     getters: {
-      singers: getSingers
+      singers: getSingers,
+      isLoading: ({ singers }) => singers.isLoading
     },
     actions: {
       deleteSinger
+    }
+  },
+  computed: {
+    haveNoSingers(){
+      return !this.isLoading && this.singers.length === 0;
     }
   },
   methods: {
