@@ -1,21 +1,38 @@
 package main
 
 import (
+	// "fmt"
 	"github.com/gorilla/context"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
+	"html/template"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
-	"song-finder/server/constants"
 	"song-finder/server/models"
 	"strconv"
 )
+
+type searchResult struct {
+	SongId     uint
+	SongName   string
+	Lyricist   string
+	Composer   string
+	SingerName string
+	AlbumName  string
+}
+
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
 
 var store = sessions.NewFilesystemStore("./session/", securecookie.GenerateRandomKey(20))
 
@@ -34,7 +51,7 @@ func authenticateAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 }
 
 func main() {
-	db, err := gorm.Open("mysql", constants.DBUsername+":"+constants.DBPassword+"@/"+constants.DBName+"?charset=utf8&parseTime=True&loc=Local")
+	db, err := models.ConnectDB()
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -42,6 +59,11 @@ func main() {
 	db.Close()
 
 	e := echo.New()
+	t := &Template{
+		templates: template.Must(template.ParseFiles("./search.html", "./song-detail.html", "./song.html")),
+	}
+	e.SetRenderer(t)
+
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			if err := next(c); err != nil {
@@ -56,10 +78,85 @@ func main() {
 	e.File("/", "./index.html")
 	e.File("/singer", "./singer.html")
 	e.File("/album", "./album.html")
-	e.File("/song", "./song.html")
-	e.File("/search", "./search.html")
-
 	e.File("/admin/login", "./login.html")
+
+	e.GET("/song", func(c echo.Context) error {
+		var songs []models.Song
+		db, err := models.ConnectDB()
+		defer db.Close()
+		if err != nil {
+			return err
+		}
+
+		db.Preload("Singer").Preload("Album").Find(&songs)
+		return c.Render(http.StatusOK, "song", songs)
+	})
+
+	e.GET("/search", func(c echo.Context) error {
+		keyword := c.QueryParam("keyword")
+		searchWord := "%" + keyword + "%"
+
+		results := make([]searchResult, 0)
+		if keyword != "" {
+			db, err := models.ConnectDB()
+			defer db.Close()
+			if err != nil {
+				return err
+			}
+
+			rows, err := db.Raw(`SELECT songs.id, songs.name, songs.lyricist, songs.composer, singers.name, albums.name 
+				                 FROM songs, singers, albums 
+				                 WHERE (songs.singer_id = singers.id AND songs.album_id = albums.id) AND 
+				                       (songs.lyricist LIKE ? OR songs.composer LIKE ? OR songs.name LIKE ? OR singers.name LIKE ? OR albums.name LIKE ?)`, searchWord, searchWord, searchWord, searchWord, searchWord).Rows()
+			defer rows.Close()
+
+			if err != nil {
+				return err
+			}
+
+			var songId uint
+			var songName, lyricist, composer, singerName, albumName string
+
+			for rows.Next() {
+				rows.Scan(&songId, &songName, &lyricist, &composer, &singerName, &albumName)
+				results = append(results, searchResult{
+					SongId:     songId,
+					Lyricist:   lyricist,
+					Composer:   composer,
+					SongName:   songName,
+					SingerName: singerName,
+					AlbumName:  albumName,
+				})
+			}
+		}
+		return c.Render(http.StatusOK, "search", results)
+	})
+
+	e.GET("/song/:id", func(c echo.Context) error {
+		var id uint64
+		var err error
+		if id, err = strconv.ParseUint(c.Param("id"), 10, 64); err != nil {
+			return err
+		}
+
+		db, err := models.ConnectDB()
+
+		defer db.Close()
+		if err != nil {
+			return err
+		}
+
+		song := models.Song{
+			Singer: models.Singer{},
+			Album:  models.Album{},
+		}
+
+		db.First(&song, id)
+		db.Model(&song).Related(&song.Singer)
+		db.Model(&song).Related(&song.Album)
+
+		return c.Render(http.StatusOK, "song-detail", song)
+	})
 
 	e.GET("/admin", func(c echo.Context) error {
 		file, err := ioutil.ReadFile("admin.html")

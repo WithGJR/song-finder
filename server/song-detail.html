@@ -1,4 +1,4 @@
-{{define "search"}}
+{{define "song-detail"}}
 <!DOCTYPE>
 <html>
 <head>
@@ -7,17 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link rel="stylesheet" href="/static/css/style.css">
-<style type="text/css">
-input {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 20px;
-}
-.table{
-	background-color: #f9f9f9;
-}
-.btn.focus, .btn:focus, .btn:hover{
-	font-size: 14px;
-}
+<style>
+  #album{
+    font-size: 18px;
+  }
 </style>
 </head>
 
@@ -36,6 +29,7 @@ input {
     <input type="submit" value="search" class="btn btn-default" />
   </form>
 </div>
+
 <div id="content">
   <div id="contentL">
   	<a href="/">Home</a>
@@ -46,35 +40,33 @@ input {
   </div>
 
   <div id="contentR">
-    <table class="table">
-  	  <thead>
-  	  	<tr>
-  		  <th>曲名</th>
-  		  <th>歌手</th>
-        <th>作詞人</th>
-        <th>作曲人</th>
-  		  <th>專輯</th>
-  		  <th></th>
-  		</tr>
-  	  </thead>
-      <tbody>
-        {{range .}}
-  	      <tr>
-  	  	  <td>{{.SongName}}</td>
-  		    <td>{{.SingerName}}</td>
-          <td>{{.Lyricist}}</td>
-          <td>{{.Composer}}</td>
-  		    <td>{{.AlbumName}}</td>
-  		    <td>
-  		      <a href="/song/{{.SongId}}" class="btn btn-default">
-  		        <span class="glyphicon glyphicon-arrow-right"></span>
-  		      </a>
-  		    </td>
-  	      </tr>
-        {{end}}
-      </tbody>
-    </table>
-    <div class="clearfix"></div>
+    <div class="col-xs-4" id="album">
+      <img src="/static/images/{{.Album.Photo}}" class="img-responsive slider" />
+
+      <span class="label label-primary">出自專輯</span>
+      <p>{{.Album.Name}}</p>
+
+      <span class="label label-primary">發行日期</span>
+      <p>{{.Album.PublishedDate}}</p>
+
+      <span class="label label-primary">發行公司</span>
+      <p>{{.Album.Company}}</p>
+
+      <span class="label label-primary">語言</span>
+      <p>{{.Album.Language}}</p>
+
+      <span class="label label-primary">提名</span>
+      <p>{{.Album.Reward}}</p>
+    </div>
+
+    <div class="col-xs-8">
+      <h2 class="bg-success text-center">{{.Name}}</h2>
+
+      <p>歌手: {{.Singer.Name}} （{{.Singer.Country}}）</p>
+      <p>作詞人： {{.Lyricist}}</p>
+      <p>作曲人： {{.Composer}}</p>
+      <p>歌曲長度： {{.Length}}</p>
+    </div>
   </div>
   <div class="clearfix"></div>
 </div>

@@ -16,7 +16,7 @@ func (this *BaseModel) Init(childModel interface{}) {
 }
 
 func First(modelInstances interface{}) error {
-	db, err := connectDB()
+	db, err := ConnectDB()
 	if err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func First(modelInstances interface{}) error {
 }
 
 func FindAll(modelInstances interface{}) error {
-	db, err := connectDB()
+	db, err := ConnectDB()
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func FindAll(modelInstances interface{}) error {
 }
 
 func (this *BaseModel) Create() error {
-	db, err := connectDB()
+	db, err := ConnectDB()
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func (this *BaseModel) Create() error {
 }
 
 func (this *BaseModel) Update() error {
-	db, err := connectDB()
+	db, err := ConnectDB()
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (this *BaseModel) Update() error {
 }
 
 func (this *BaseModel) Delete() error {
-	db, err := connectDB()
+	db, err := ConnectDB()
 	if err != nil {
 		return err
 	}
